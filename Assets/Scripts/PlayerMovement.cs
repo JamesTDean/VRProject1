@@ -27,6 +27,9 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = cameraRig.forward * speed;
         }
 
+        Vector2 axis = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
+        rb.velocity = speed * axis.y * cameraRig.forward;
+
         //VR move character on joystick touch
 
         //find direction to center of world
