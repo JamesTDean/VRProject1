@@ -5,17 +5,17 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private GameObject world;
-    private Transform cameraRig;
+    private Transform eyes;
     private Rigidbody rb;
     private float speed = 3f;
-    private float forceMagnitude = 5f;
+    private float forceMagnitude = 25f;
 
     // Start is called before the first frame update
     void Start()
     {
         world = GameObject.Find("World");
-        cameraRig = transform.Find("OVRCameraRig");
-        rb = gameObject.GetComponent<Rigidbody>();
+        eyes = transform.parent.Find("CenterEyeAnchor");
+        rb = transform.parent.GetComponentInParent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -24,11 +24,11 @@ public class PlayerMovement : MonoBehaviour
         //move character when key press is detected
         if (Input.GetKey("up"))
         {
-            rb.velocity = cameraRig.forward * speed;
+            rb.velocity = eyes.forward * speed;
         }
 
         Vector2 axis = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
-        rb.velocity = speed * axis.y * cameraRig.forward;
+        rb.velocity = speed * axis.y * eyes.forward;
 
         //VR move character on joystick touch
 
@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
         // update the objects rotation in relation to the planet
         Quaternion targetRotation = Quaternion.FromToRotation(transform.up, toBodyDir) * transform.rotation;
         // smooth rotation
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50 * Time.fixedDeltaTime);
+        transform.parent.parent.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50 * Time.fixedDeltaTime);
 
     }
 }
