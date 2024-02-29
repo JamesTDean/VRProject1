@@ -99,7 +99,7 @@ public class MovementManager : MonoBehaviour
             bodyRB.velocity = movementSpeed * pushMagnitude * velocityDirection;
         }
        
-        debugText.SetText(string.Concat(myXRRig.parent.position.ToString() , "\n" , myXRRig.localPosition.ToString() ,"\n", mainCamera.localPosition.ToString()));
+        //debugText.SetText(string.Concat(myXRRig.parent.position.ToString() , "\n" , myXRRig.localPosition.ToString() ,"\n", mainCamera.localPosition.ToString()));
 
         //add false gravity so that character stays on surface
         bodyRB.AddForce(forceMagnitude * toCenterDir);

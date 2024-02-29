@@ -145,9 +145,10 @@ GameObject:
   - component: {fileID: 3988229146299458967}
   - component: {fileID: 130173728280344598}
   - component: {fileID: -1878852180722291797}
+  - component: {fileID: 7770658918583550990}
   m_Layer: 0
   m_Name: NetworkPlayer
-  m_TagString: Untagged
+  m_TagString: runner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -209,6 +210,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftController: {fileID: 0}
   debugText: {fileID: 7916687726254054364}
+--- !u!114 &7770658918583550990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 279489553509514006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baa333d9519d2bf4ba058d56c38406c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaser: 0
+  tagEvent: 0
+  taggedID: 0
+  lives: 0
+  debugText: {fileID: 7916687726254054364}
 --- !u!1 &2122312016809927256
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,9 +240,10 @@ GameObject:
   - component: {fileID: 4472692633463121391}
   - component: {fileID: 6311048903716740062}
   - component: {fileID: 8410093365927559627}
+  - component: {fileID: 206829900812906117}
   m_Layer: 0
   m_Name: RightHand
-  m_TagString: Untagged
+  m_TagString: hand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -332,6 +351,18 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &206829900812906117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122312016809927256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bb7acd6d9ed8ed49ba5bd521e2e0715, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2844058006956200992
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,9 +376,10 @@ GameObject:
   - component: {fileID: 6186297360981431056}
   - component: {fileID: 2453235529144615735}
   - component: {fileID: 5258458291279123668}
+  - component: {fileID: 5267161817971013783}
   m_Layer: 0
   m_Name: LeftHand
-  m_TagString: Untagged
+  m_TagString: hand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -454,6 +486,18 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &5267161817971013783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2844058006956200992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bb7acd6d9ed8ed49ba5bd521e2e0715, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2954150802907110338
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,9 +512,10 @@ GameObject:
   - component: {fileID: 3143641974009883623}
   - component: {fileID: 6960587310189315186}
   - component: {fileID: 2472971359462875612}
+  - component: {fileID: 7170284801128043932}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: body
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -606,6 +651,18 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &7170284801128043932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2954150802907110338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bb7acd6d9ed8ed49ba5bd521e2e0715, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4550001711875794661
 GameObject:
   m_ObjectHideFlags: 0
