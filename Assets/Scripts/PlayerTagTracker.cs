@@ -8,11 +8,10 @@ using TMPro;
 public class PlayerTagTracker : MonoBehaviourPunCallbacks
 {
     public bool chaser;
-    public int taggedID;
 
     public int lives;
     private InputData inputData;
-    private TagManager myTagManagerScript;
+    private GameManager myGameManagerScript;
     private PhotonView myView;
     [SerializeField] private TMP_Text debugText;
 
@@ -22,8 +21,9 @@ public class PlayerTagTracker : MonoBehaviourPunCallbacks
         chaser = false;
         lives = 3;
         inputData = GameObject.Find("XR Origin (XR Rig)").GetComponent<InputData>();
-        myTagManagerScript = GameObject.Find("TagManager").GetComponent<TagManager>();
+        myGameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
         myView = GetComponent<PhotonView>();
+        myGameManagerScript.playerID = myView.ViewID;
     }
 
     // Update is called once per frame
@@ -47,7 +47,7 @@ public class PlayerTagTracker : MonoBehaviourPunCallbacks
                     chaser = true;
                 }
             }
-            debugText.SetText(chaser.ToString());
+            //debugText.SetText(chaser.ToString());
         }
     }
 
@@ -59,9 +59,6 @@ public class PlayerTagTracker : MonoBehaviourPunCallbacks
     [PunRPC]
     void TriggerTagRPC(bool tagged)
     {
-        //transform.position = new Vector3(0, Random.Range(2f, 10f), 0);
-        Debug.Log(myView.ViewID);
-        Debug.Log(taggedID);
         if (tagged)
         {
             //teleport new chaser away

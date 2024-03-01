@@ -54,9 +54,11 @@ public class MovementManager : MonoBehaviour
     {
         if (myView.IsMine)
         {
-            Vector3 distanceToCamera = new Vector3(mainCamera.localPosition.x, 0, mainCamera.localPosition.z);
-            myXRRig.transform.parent.position = body.transform.position - distanceToCamera;
-            myXRRig.transform.localPosition = Vector3.zero;
+            //Vector3 distanceToCamera = new Vector3(mainCamera.localPosition.x, 0, mainCamera.localPosition.z);
+            Vector3 distanceToCamera = Vector3.zero;
+            myXRRig.transform.parent.position = body.transform.position;
+            myXRRig.transform.localPosition = -mainCamera.localPosition + new Vector3(0,1.2f,0);
+
             myXRRig.transform.parent.rotation = body.transform.rotation;
             leftHand.transform.position = leftController.transform.position;
             rightHand.transform.position = rightController.transform.position;
@@ -99,7 +101,8 @@ public class MovementManager : MonoBehaviour
             bodyRB.velocity = movementSpeed * pushMagnitude * velocityDirection;
         }
        
-        //debugText.SetText(string.Concat(myXRRig.parent.position.ToString() , "\n" , myXRRig.localPosition.ToString() ,"\n", mainCamera.localPosition.ToString()));
+        debugText.SetText(string.Concat(myXRRig.parent.position.ToString() , "\n" , myXRRig.localPosition.ToString() ,"\n", mainCamera.localPosition.ToString()));
+        //debugText.gameObject.transform.LookAt(mainCamera);
 
         //add false gravity so that character stays on surface
         bodyRB.AddForce(forceMagnitude * toCenterDir);
