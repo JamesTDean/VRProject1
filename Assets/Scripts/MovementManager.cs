@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.XR;
 using Photon.Pun;
 using TMPro;
+using UnityEngine.UI;
+
 
 public class MovementManager : MonoBehaviour
 {
@@ -23,10 +25,26 @@ public class MovementManager : MonoBehaviour
     private float yInput;
     private float movementSpeed = 5f;
 
+    GameObject myXROrigin;
+
+    public int teleportation_credit;
+
     [SerializeField] private TMP_Text debugText;
 
     private GameObject world;
     private float forceMagnitude = 25f;
+
+    private bool triggerPressedLastFrame = false;
+    [SerializeField]  public TMP_Text teleportationCredit_text;
+    public bool isRepulsive;
+
+
+
+
+
+
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -41,12 +59,26 @@ public class MovementManager : MonoBehaviour
         leftController = GameObject.Find("Left Controller");
         rightController = GameObject.Find("Right Controller");
 
-        GameObject myXROrigin = GameObject.Find("XR Origin (XR Rig)");
+        myXROrigin = GameObject.Find("XR Origin (XR Rig)");
         myXRRig = myXROrigin.transform;
         inputData = myXROrigin.GetComponent<InputData>();
         mainCamera = myXRRig.Find("Camera Offset").Find("Main Camera");
 
         world = GameObject.Find("World");
+
+        teleportation_credit = 0;
+        
+
+        
+        //if (myView.IsMine)
+        //{
+        //    teleportationManager.SetActive(false);
+        //}
+
+
+
+
+
     }
 
     // Update is called once per frame
@@ -71,7 +103,25 @@ public class MovementManager : MonoBehaviour
         {
             xInput = Input.GetAxis("Horizontal");
             yInput = Input.GetAxis("Vertical");
+            
+            //teleportationCredit_text.text = "my tele credit: " + teleportation_credit;
+            teleportationCredit_text.SetText("Teleportation Credit: " + teleportation_credit);
+            //debugText.SetText("tag: " + transform.parent.tag);
         }
+
+
+
+        
+        
+
+        
+
+
+
+
+
+
+
     }
 
     private void FixedUpdate()
@@ -86,8 +136,10 @@ public class MovementManager : MonoBehaviour
         //bodyRB.AddForce(xInput * sideways.normalized * movementSpeed);
 
         Vector2 inputDir = new Vector2(xInput, yInput);
+        
         if (inputDir != new Vector2(0, 0))
         {
+            //Debug.Log("credit is: " + teleportation_credit);
             Vector3 lookDirection = (forward - toBodyDir * Vector3.Dot(forward, toBodyDir)).normalized;
             Quaternion rotation = Quaternion.AngleAxis(Vector2.Angle(new Vector2(0, 1f), inputDir.normalized), toBodyDir);
             if (xInput < 0)
@@ -97,8 +149,33 @@ public class MovementManager : MonoBehaviour
             Vector3 velocityDirection =  rotation * lookDirection;
             float pushMagnitude = Vector2.SqrMagnitude(inputDir);
             bodyRB.velocity = movementSpeed * pushMagnitude * velocityDirection;
+
+            
+            
         }
-       
+
+        if (teleportation_credit > 0)
+        {
+            Vector3 lookDirection = (forward - toBodyDir * Vector3.Dot(forward, toBodyDir)).normalized;
+
+
+            if (inputData.rightController.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue))
+            {
+                // Check if the trigger is pulled (you can adjust the threshold as needed)
+                if (triggerValue > 0.5f && !triggerPressedLastFrame)
+                {
+                    //Vector3 forward = mainCamera.forward;
+
+                    bodyRB.transform.position = bodyRB.transform.position + lookDirection * 5;
+
+                    teleportation_credit -= 1;
+
+
+                }
+                triggerPressedLastFrame = triggerValue > 0.5f;
+            }
+        }
+
         //debugText.SetText(string.Concat(myXRRig.parent.position.ToString() , "\n" , myXRRig.localPosition.ToString() ,"\n", mainCamera.localPosition.ToString()));
 
         //add false gravity so that character stays on surface
@@ -109,4 +186,11 @@ public class MovementManager : MonoBehaviour
         // smooth rotation
         body.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50 * Time.fixedDeltaTime);
     }
+
+    public void setSpeed(float num)
+    {
+        movementSpeed += num;
+    }
+
+    
 }
