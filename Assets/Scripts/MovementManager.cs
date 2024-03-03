@@ -109,6 +109,7 @@ public class MovementManager : MonoBehaviour
             //teleportationCredit_text.text = "my tele credit: " + teleportation_credit;
             teleportationCredit_text.SetText("Teleport Credit: " + teleportation_credit);
             //debugText.SetText("tag: " + transform.parent.tag);
+            Debug.Log(body.transform.parent.tag);
         }
 
 

@@ -19,7 +19,7 @@ public class powerupSpawner : MonoBehaviour
         platformPos = transform.position;
         platformSize = transform.localScale;
         sphereTransform = this.transform;
-        spawnList = new GameObject[] {obj1, obj2, obj1, obj2, obj3 };
+        spawnList = new GameObject[] {obj1, obj2, obj1, obj3, obj2 };
         StartCoroutine(Spawner());
         
     }
