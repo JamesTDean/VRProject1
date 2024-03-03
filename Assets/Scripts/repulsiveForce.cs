@@ -27,22 +27,34 @@ public class repulsiveForce : MonoBehaviour
     private void Update()
     {
         //Vector3 posRunner = playerShip.myBody.position;
-        Rigidbody thisRB = playerObject.GetComponent<Rigidbody>();
-        Transform parentTransform = playerObject.transform.parent;
-        GameObject parentObject = parentTransform.gameObject; // networkplayer
 
-        if (playerObject != null && parentObject.tag == "runner")
+        
+
+        if (playerObject != null )
         {
-            
+
+            Transform parentTransform = playerObject.transform.parent;
+            GameObject parentObject = parentTransform.gameObject; // networkplayer
+            Rigidbody thisRB = playerObject.GetComponent<Rigidbody>();
             Vector3 pos = thisRB.transform.position;
-            ActivatePowerUpRunner(playerObject, pos);
+            if (parentObject.tag == "runner")
+            {
+                ActivatePowerUpRunner(playerObject, pos);
+            }
+
+            if (parentObject.tag == "chaser")
+            {
+                //Rigidbody thisRB = playerObject.GetComponent<Rigidbody>();
+                //Vector3 pos = thisRB.transform.position;
+                ActivatePowerUpChaser(playerObject, pos);
+            }
+
+
+
+
 
         }
-        if (playerObject != null && parentObject.tag == "chaser")
-        {
-            Vector3 pos = thisRB.transform.position;
-            ActivatePowerUpChaser(playerObject, pos);
-        }
+        
     }
 
 

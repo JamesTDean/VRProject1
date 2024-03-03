@@ -38,6 +38,8 @@ public class MovementManager : MonoBehaviour
     [SerializeField]  public TMP_Text teleportationCredit_text;
     public bool isRepulsive;
 
+    public bool isSpeedup;
+
 
 
 
@@ -67,9 +69,9 @@ public class MovementManager : MonoBehaviour
         world = GameObject.Find("World");
 
         teleportation_credit = 0;
-        
+        isSpeedup = false;
 
-        
+
         //if (myView.IsMine)
         //{
         //    teleportationManager.SetActive(false);
@@ -105,7 +107,7 @@ public class MovementManager : MonoBehaviour
             yInput = Input.GetAxis("Vertical");
             
             //teleportationCredit_text.text = "my tele credit: " + teleportation_credit;
-            teleportationCredit_text.SetText("Teleportation Credit: " + teleportation_credit);
+            teleportationCredit_text.SetText("Teleport Credit: " + teleportation_credit);
             //debugText.SetText("tag: " + transform.parent.tag);
         }
 

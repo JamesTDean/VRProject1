@@ -33,8 +33,11 @@ public class powerUp : MonoBehaviour
             Debug.Log(parentObject == null);
             MovementManager move = parentObject.GetComponent<MovementManager>();
             //powerup sequence
+            if (!move.isSpeedup)
+            {
+                StartCoroutine(powerSequence(move));
+            }
             
-            StartCoroutine(powerSequence(move));
             
             
         }
@@ -61,12 +64,14 @@ public class powerUp : MonoBehaviour
 
     private void ActivatePowerUp(MovementManager move)
     {
+        move.isSpeedup = true;
         move.setSpeed(_speedIncreaseAmount);
         
     }
 
     private void DeactivatePowerUp(MovementManager move)
     {
+        move.isSpeedup = false;
         move.setSpeed(-_speedIncreaseAmount);
         
     }
