@@ -11,7 +11,7 @@ public class powerupSpawner : MonoBehaviour
     public Vector3 platformPos;
     public Vector3 platformSize;
     private Transform sphereTransform;
-    private float radius = 11f;
+    private float radius = 10.75f;
 
     GameObject[] spawnList;
     void Start()

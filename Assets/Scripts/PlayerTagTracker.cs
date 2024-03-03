@@ -47,7 +47,7 @@ public class PlayerTagTracker : MonoBehaviourPunCallbacks
                     chaser = true;
                 }
             }
-            debugText.SetText(chaser.ToString());
+            //debugText.SetText(chaser.ToString());
         }
     }
 

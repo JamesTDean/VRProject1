@@ -215,6 +215,7 @@ MonoBehaviour:
   debugText: {fileID: 7916687726254054364}
   teleportationCredit_text: {fileID: 712108480411198871}
   isRepulsive: 0
+  isSpeedup: 0
 --- !u!114 &7770658918583550990
 MonoBehaviour:
   m_ObjectHideFlags: 0
