@@ -223,7 +223,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chaser: 0
-  tagEvent: 0
   taggedID: 0
   lives: 0
   debugText: {fileID: 7916687726254054364}
