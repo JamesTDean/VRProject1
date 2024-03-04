@@ -8,7 +8,6 @@ using TMPro;
 public class PlayerTagTracker : MonoBehaviourPunCallbacks
 {
     public bool chaser;
-    public bool test;
     public int lives;
     //public bool isHost;
 
@@ -59,13 +58,6 @@ public class PlayerTagTracker : MonoBehaviourPunCallbacks
                 }
             }
             debugText.SetText(chaser.ToString());*/
-        }
-
-        if (test)
-        {
-            Vector3 spawnDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-            transform.position = world.transform.position + (world.transform.localScale.x / 2 + 3) * spawnDirection.normalized;
-            test = false;
         }
     }
 

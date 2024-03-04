@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI health_text;
     [SerializeField] private TextMeshProUGUI timer;
     [SerializeField] private TextMeshProUGUI chaserText;
+    public GameObject teleportCreditText;
     [SerializeField] private GameObject startText;
     [SerializeField] private GameObject winnerText;
 
@@ -109,6 +110,7 @@ public class GameManager : MonoBehaviour
                 timer.gameObject.SetActive(false);
                 health_text.gameObject.SetActive(false);
                 chaserText.gameObject.SetActive(false);
+                teleportCreditText.SetActive(false);
                 startText.SetActive(true);
                 winnerText.SetActive(false);
                 break;
@@ -120,6 +122,7 @@ public class GameManager : MonoBehaviour
                 timer.gameObject.SetActive(false);
                 health_text.gameObject.SetActive(false);
                 chaserText.gameObject.SetActive(false);
+                teleportCreditText.SetActive(false);
                 startText.SetActive(false);
                 winnerText.SetActive(true);
                 break;
@@ -131,6 +134,7 @@ public class GameManager : MonoBehaviour
                 timer.gameObject.SetActive(true);
                 health_text.gameObject.SetActive(true);
                 chaserText.gameObject.SetActive(true);
+                teleportCreditText.SetActive(true);
                 startText.SetActive(false);
                 winnerText.SetActive(false);
                 health_text.text = "Lives: " + health;
@@ -144,6 +148,7 @@ public class GameManager : MonoBehaviour
                 timer.gameObject.SetActive(true);
                 health_text.gameObject.SetActive(true);
                 chaserText.gameObject.SetActive(true);
+                teleportCreditText.SetActive(true);
                 startText.SetActive(false);
                 winnerText.SetActive(false);
                 health_text.text = "Lives: " + health;
@@ -157,6 +162,7 @@ public class GameManager : MonoBehaviour
                 timer.gameObject.SetActive(true);
                 health_text.gameObject.SetActive(true);
                 chaserText.gameObject.SetActive(true);
+                teleportCreditText.SetActive(true);
                 startText.SetActive(false);
                 winnerText.SetActive(false);
                 health_text.text = "Lives: " + health;
@@ -171,6 +177,7 @@ public class GameManager : MonoBehaviour
                 timer.gameObject.SetActive(false);
                 health_text.gameObject.SetActive(false);
                 chaserText.gameObject.SetActive(false);
+                teleportCreditText.SetActive(false);
                 startText.SetActive(false);
                 winnerText.SetActive(false);
                 health_text.text = "Lives: " + health;

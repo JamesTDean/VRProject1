@@ -7,6 +7,12 @@ using TMPro;
 
 public class MovementManager : MonoBehaviour
 {
+    public int teleportation_credit;
+    private bool triggerPressedLastFrame = false;
+    [SerializeField] private TMP_Text teleportationCredit_text;
+    public bool isRepulsive;
+    public bool isSpeedup;
+
     private PhotonView myView;
     private InputData inputData;
 
@@ -49,6 +55,10 @@ public class MovementManager : MonoBehaviour
         mainCamera = myXRRig.Find("Camera Offset").Find("Main Camera");
 
         world = GameObject.Find("World");
+
+        teleportationCredit_text = GameObject.Find("GameManager").GetComponent<GameManager>().teleportCreditText.GetComponent<TMP_Text>();
+        teleportation_credit = 0;
+        isSpeedup = false;
     }
 
     // Update is called once per frame
@@ -76,6 +86,11 @@ public class MovementManager : MonoBehaviour
         {
             xInput = Input.GetAxis("Horizontal");
             yInput = Input.GetAxis("Vertical");
+
+            //teleportationCredit_text.text = "my tele credit: " + teleportation_credit;
+            teleportationCredit_text.SetText("Teleport Credit: " + teleportation_credit);
+            //debugText.SetText("tag: " + body.transform.parent.tag);
+            //Debug.Log("tag: " + body.transform.parent.tag);
         }
     }
 
@@ -105,7 +120,29 @@ public class MovementManager : MonoBehaviour
             bodyRB.velocity = movementSpeed * pushMagnitude * velocityDirection + verticalVelocity;
         }
 
-        debugText.SetText(string.Concat(myXRRig.parent.position.ToString(), "\n", myXRRig.localPosition.ToString(), "\n", mainCamera.localPosition.ToString()));
+        if (teleportation_credit > 0)
+        {
+            Vector3 lookDirection = (forward - toBodyDir * Vector3.Dot(forward, toBodyDir)).normalized;
+
+
+            if (inputData.rightController.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue))
+            {
+                // Check if the trigger is pulled (you can adjust the threshold as needed)
+                if (triggerValue > 0.5f && !triggerPressedLastFrame)
+                {
+                    //Vector3 forward = mainCamera.forward;
+
+                    bodyRB.transform.position = bodyRB.transform.position + lookDirection * 5;
+
+                    teleportation_credit -= 1;
+
+
+                }
+                triggerPressedLastFrame = triggerValue > 0.5f;
+            }
+        }
+
+        //debugText.SetText(string.Concat(myXRRig.parent.position.ToString(), "\n", myXRRig.localPosition.ToString(), "\n", mainCamera.localPosition.ToString()));
         //debugText.gameObject.transform.LookAt(mainCamera);
 
         //add false gravity so that character stays on surface
@@ -116,5 +153,10 @@ public class MovementManager : MonoBehaviour
         // smooth rotation
         body.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50 * Time.fixedDeltaTime);
         uiMenu.transform.LookAt(mainCamera, mainCamera.transform.up);
+    }
+
+    public void setSpeed(float num)
+    {
+        movementSpeed += num;
     }
 }

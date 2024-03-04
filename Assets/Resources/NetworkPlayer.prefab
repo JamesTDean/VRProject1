@@ -208,6 +208,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47681a2b1e4fbce4dbcd5f7960dfa227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportation_credit: 0
+  teleportationCredit_text: {fileID: 0}
+  isRepulsive: 0
+  isSpeedup: 0
   leftController: {fileID: 0}
   debugText: {fileID: 7916687726254054364}
 --- !u!114 &7770658918583550990
@@ -223,7 +227,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chaser: 0
-  test: 0
   lives: 0
   debugText: {fileID: 7916687726254054364}
 --- !u!1 &2122312016809927256
