@@ -7,14 +7,10 @@ using Photon.Pun;
 using TMPro;
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject gameOver, heart0, heart1, heart2, heart3;
+    [SerializeField] private GameObject gameOver, heart0, heart1, heart2, heart3, startText, winnerText;
     [SerializeField] private Button restartButton;
-    [SerializeField] private TextMeshProUGUI health_text;
-    [SerializeField] private TextMeshProUGUI timer;
-    [SerializeField] private TextMeshProUGUI chaserText;
+    [SerializeField] private TextMeshProUGUI health_text, timer, chaserText;
     public GameObject teleportCreditText;
-    [SerializeField] private GameObject startText;
-    [SerializeField] private GameObject winnerText;
 
     public int health;
     public int playerID;
@@ -24,7 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerTagTracker myPlayerTagTrackerScript;
     private InputData inputData;
     private PhotonView myView;
-    [SerializeField] private bool gameStarted;
+    public bool gameStarted;
     private bool isWinner;
 
     // Start is called before the first frame update
@@ -36,7 +32,7 @@ public class GameManager : MonoBehaviour
         heart1.gameObject.SetActive(true);
         heart2.gameObject.SetActive(true);
         heart3.gameObject.SetActive(true);
-        gameOver.gameObject.SetActive(false);
+        gameOver.SetActive(false);
         restartButton.gameObject.SetActive(false);
         myView = GetComponent<PhotonView>();
         inputData = GameObject.Find("XR Origin (XR Rig)").GetComponent<InputData>();
@@ -113,6 +109,7 @@ public class GameManager : MonoBehaviour
                 teleportCreditText.SetActive(false);
                 startText.SetActive(true);
                 winnerText.SetActive(false);
+                gameOver.SetActive(false);
                 break;
             case 50:
                 heart0.gameObject.SetActive(false);
@@ -125,6 +122,7 @@ public class GameManager : MonoBehaviour
                 teleportCreditText.SetActive(false);
                 startText.SetActive(false);
                 winnerText.SetActive(true);
+                gameOver.SetActive(false);
                 break;
             case 3:
                 heart0.gameObject.SetActive(true);
@@ -139,6 +137,7 @@ public class GameManager : MonoBehaviour
                 winnerText.SetActive(false);
                 health_text.text = "Lives: " + health;
                 chaserText.text = "You are a: " + chaserTextString;
+                gameOver.SetActive(false);
                 break;
             case 2:
                 heart0.gameObject.SetActive(true);
@@ -153,6 +152,7 @@ public class GameManager : MonoBehaviour
                 winnerText.SetActive(false);
                 health_text.text = "Lives: " + health;
                 chaserText.text = "You are a: " + chaserTextString;
+                gameOver.SetActive(false);
                 break;
             case 1:
                 heart0.gameObject.SetActive(true);
@@ -167,13 +167,14 @@ public class GameManager : MonoBehaviour
                 winnerText.SetActive(false);
                 health_text.text = "Lives: " + health;
                 chaserText.text = "You are a: " + chaserTextString;
+                gameOver.SetActive(false);
                 break;
             case 0:
                 heart0.gameObject.SetActive(false);
                 heart1.gameObject.SetActive(false);
                 heart2.gameObject.SetActive(false);
                 heart3.gameObject.SetActive(false);
-                //gameOver.gameObject.SetActive(true);
+                gameOver.SetActive(true);
                 timer.gameObject.SetActive(false);
                 health_text.gameObject.SetActive(false);
                 chaserText.gameObject.SetActive(false);
@@ -196,7 +197,6 @@ public class GameManager : MonoBehaviour
                 //restartButton.gameObject.SetActive(true);
                 health_text.text = "Lives: " + health;
                 break;
-
         }
     }
 

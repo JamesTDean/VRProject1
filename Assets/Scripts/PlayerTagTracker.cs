@@ -9,13 +9,15 @@ public class PlayerTagTracker : MonoBehaviourPunCallbacks
 {
     public bool chaser;
     public int lives;
+    [SerializeField] private List<Material> myMaterials;
     //public bool isHost;
 
     private GameObject world;
     private InputData inputData;
     private GameManager myGameManagerScript;
     private PhotonView myView;
-    [SerializeField] private TMP_Text debugText;
+    //[SerializeField] private TMP_Text debugText;
+    private MeshRenderer myMesh;
 
     // Start is called before the first frame update
     void Awake()
@@ -32,6 +34,7 @@ public class PlayerTagTracker : MonoBehaviourPunCallbacks
             myGameManagerScript.AssignPlayer(gameObject);
             //myGameManagerScript.AssignHost();
         }
+        myMesh = GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
@@ -42,10 +45,12 @@ public class PlayerTagTracker : MonoBehaviourPunCallbacks
             if (chaser)
             {
                 gameObject.tag = "chaser";
+                ChangeMaterial(0);
             }
             else
             {
                 gameObject.tag = "runner";
+                ChangeMaterial(1);
             }
 
             /*
@@ -106,18 +111,24 @@ public class PlayerTagTracker : MonoBehaviourPunCallbacks
         }
     }
 
-    //this function isn't working when future players aren't in the scene yet. not sure why
-    public void SetHost()
+    private void ChangeMaterial(int index)
     {
-        myView.RPC("SetHostRPC", RpcTarget.All);
+        myView.RPC("ChangeMaterialRPC", RpcTarget.All, index);
     }
 
     [PunRPC]
-    void SetHostRPC()
+    void ChangeMaterialRPC(int index)
     {
         if (myView.IsMine)
         {
-            //isHost = true;
+            var children = gameObject.GetComponentsInChildren<MeshRenderer>();
+            foreach (var mesh in children)
+            {
+                if(mesh.gameObject.name != "Hat")
+                {
+                    mesh.material = myMaterials[index];
+                }
+            }
         }
     }
 }
