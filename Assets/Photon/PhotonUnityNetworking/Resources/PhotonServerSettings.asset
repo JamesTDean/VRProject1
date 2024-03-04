@@ -44,6 +44,11 @@ MonoBehaviour:
   - TriggerTagEventForAll
   - TagOccuredRPC
   - TriggerTagRPC
+  - updateHealthRPC
+  - SetHostRPC
+  - StartGameRPC
+  - MoveAtStartRPC
+  - ResetTimerRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

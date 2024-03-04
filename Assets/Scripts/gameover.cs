@@ -18,10 +18,8 @@ public class gameover : MonoBehaviour
 
     public void RestartLevel()
     {
-        Time.timeScale = 1;
-        
         SceneManager.LoadScene(0);
-        myPlayerTagTracker.lives = 3;
+        myGameManagerScript.updateHealth(3);
         myGameManagerScript.timeRemaining = 5;
     }
 

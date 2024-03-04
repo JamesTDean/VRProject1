@@ -29,7 +29,7 @@ public class TriggerTag : MonoBehaviour
         }
         catch
         {
-            Debug.Log("Collision object does not have a parent.");
+            //Debug.Log("Collision object does not have a parent.");
         }
             
     }

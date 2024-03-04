@@ -16,6 +16,7 @@ public class MovementManager : MonoBehaviour
     private Rigidbody bodyRB;
     private GameObject leftHand;
     private GameObject rightHand;
+    private GameObject uiMenu;
     [SerializeField] private GameObject leftController;
     private GameObject rightController;
 
@@ -40,6 +41,7 @@ public class MovementManager : MonoBehaviour
 
         leftController = GameObject.Find("Left Controller");
         rightController = GameObject.Find("Right Controller");
+        uiMenu = GameObject.Find("UI");
 
         GameObject myXROrigin = GameObject.Find("XR Origin (XR Rig)");
         myXRRig = myXROrigin.transform;
@@ -62,6 +64,7 @@ public class MovementManager : MonoBehaviour
             myXRRig.transform.parent.rotation = body.transform.rotation;
             leftHand.transform.position = leftController.transform.position;
             rightHand.transform.position = rightController.transform.position;
+            uiMenu.transform.position = leftController.transform.position;
 
             if (inputData.rightController.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 movement))
             {
@@ -98,10 +101,11 @@ public class MovementManager : MonoBehaviour
             }
             Vector3 velocityDirection =  rotation * lookDirection;
             float pushMagnitude = Vector2.SqrMagnitude(inputDir);
-            bodyRB.velocity = movementSpeed * pushMagnitude * velocityDirection;
+            Vector3 verticalVelocity = Vector3.Dot(bodyRB.velocity, toCenterDir) * toCenterDir.normalized;
+            bodyRB.velocity = movementSpeed * pushMagnitude * velocityDirection + verticalVelocity;
         }
-       
-        debugText.SetText(string.Concat(myXRRig.parent.position.ToString() , "\n" , myXRRig.localPosition.ToString() ,"\n", mainCamera.localPosition.ToString()));
+
+        debugText.SetText(string.Concat(myXRRig.parent.position.ToString(), "\n", myXRRig.localPosition.ToString(), "\n", mainCamera.localPosition.ToString()));
         //debugText.gameObject.transform.LookAt(mainCamera);
 
         //add false gravity so that character stays on surface
@@ -111,5 +115,6 @@ public class MovementManager : MonoBehaviour
         Quaternion targetRotation = Quaternion.FromToRotation(body.transform.up, toBodyDir) * body.transform.rotation;
         // smooth rotation
         body.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50 * Time.fixedDeltaTime);
+        uiMenu.transform.LookAt(mainCamera, mainCamera.transform.up);
     }
 }
