@@ -6,6 +6,7 @@ using Photon.Pun;
 public class TagManager : MonoBehaviourPunCallbacks
 {
     private PlayerTagTracker myPlayerTagTrackerScript;
+    [SerializeField] private GameManager myGameManagerScript;
 
     public void TagOccured(int newChaserID)
     {
@@ -50,5 +51,7 @@ public class TagManager : MonoBehaviourPunCallbacks
                 myPlayerTagTrackerScript.TriggerTag(tagged);
             }
         }
+
+        myGameManagerScript.ResetTimer();
     }
 }

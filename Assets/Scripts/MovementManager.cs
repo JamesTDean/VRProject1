@@ -101,22 +101,20 @@ public class MovementManager : MonoBehaviour
             }
             Vector3 velocityDirection =  rotation * lookDirection;
             float pushMagnitude = Vector2.SqrMagnitude(inputDir);
-            bodyRB.velocity = movementSpeed * pushMagnitude * velocityDirection;
+            Vector3 verticalVelocity = Vector3.Dot(bodyRB.velocity, toCenterDir) * toCenterDir.normalized;
+            bodyRB.velocity = movementSpeed * pushMagnitude * velocityDirection + verticalVelocity;
         }
-       
-        if (myView.IsMine)
-        {
-            debugText.SetText(string.Concat(myXRRig.parent.position.ToString(), "\n", myXRRig.localPosition.ToString(), "\n", mainCamera.localPosition.ToString()));
-            //debugText.gameObject.transform.LookAt(mainCamera);
 
-            //add false gravity so that character stays on surface
-            bodyRB.AddForce(forceMagnitude * toCenterDir);
+        debugText.SetText(string.Concat(myXRRig.parent.position.ToString(), "\n", myXRRig.localPosition.ToString(), "\n", mainCamera.localPosition.ToString()));
+        //debugText.gameObject.transform.LookAt(mainCamera);
 
-            // update the objects rotation in relation to the planet
-            Quaternion targetRotation = Quaternion.FromToRotation(body.transform.up, toBodyDir) * body.transform.rotation;
-            // smooth rotation
-            body.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50 * Time.fixedDeltaTime);
-            uiMenu.transform.LookAt(mainCamera, mainCamera.transform.up);
-        }
+        //add false gravity so that character stays on surface
+        bodyRB.AddForce(forceMagnitude * toCenterDir);
+
+        // update the objects rotation in relation to the planet
+        Quaternion targetRotation = Quaternion.FromToRotation(body.transform.up, toBodyDir) * body.transform.rotation;
+        // smooth rotation
+        body.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50 * Time.fixedDeltaTime);
+        uiMenu.transform.LookAt(mainCamera, mainCamera.transform.up);
     }
 }

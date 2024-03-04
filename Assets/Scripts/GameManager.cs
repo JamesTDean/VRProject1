@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button restartButton;
     [SerializeField] private TextMeshProUGUI health_text;
     [SerializeField] private TextMeshProUGUI timer;
+    [SerializeField] private TextMeshProUGUI chaserText;
     [SerializeField] private GameObject startText;
     [SerializeField] private GameObject winnerText;
 
@@ -62,10 +63,22 @@ public class GameManager : MonoBehaviour
         {
             timeRemaining -= Time.deltaTime;
             updateTime(timeRemaining); 
-        } else
+        }
+        else if(timeRemaining <= 0 && gameStarted)
         {
-            updateTime(0);
-            //updateHealth(0);
+            ResetTimer();
+            var photonViews = FindObjectsOfType<PhotonView>();
+            foreach (var view in photonViews)
+            {
+                if (view.gameObject.name == "NetworkPlayer(Clone)")
+                {
+                    var playerScript = view.gameObject.GetComponent<PlayerTagTracker>();
+                    if (playerScript.chaser)
+                    {
+                        playerScript.lives -= 1;
+                    }
+                }    
+            }
         }
 
         if (inputData.rightController.TryGetFeatureValue(CommonUsages.primaryButton, out bool press) && !gameStarted)
@@ -76,6 +89,16 @@ public class GameManager : MonoBehaviour
             }
         }
 
+
+        string chaserTextString = "Runner";
+        if (myPlayer != null)
+        {   
+            if (myPlayerTagTrackerScript.chaser)
+            {
+                chaserTextString = "Chaser";
+            }
+        }
+        
         switch (health)
         {
             case 100:
@@ -85,6 +108,7 @@ public class GameManager : MonoBehaviour
                 heart3.gameObject.SetActive(false);
                 timer.gameObject.SetActive(false);
                 health_text.gameObject.SetActive(false);
+                chaserText.gameObject.SetActive(false);
                 startText.SetActive(true);
                 winnerText.SetActive(false);
                 break;
@@ -95,6 +119,7 @@ public class GameManager : MonoBehaviour
                 heart3.gameObject.SetActive(false);
                 timer.gameObject.SetActive(false);
                 health_text.gameObject.SetActive(false);
+                chaserText.gameObject.SetActive(false);
                 startText.SetActive(false);
                 winnerText.SetActive(true);
                 break;
@@ -105,9 +130,11 @@ public class GameManager : MonoBehaviour
                 heart3.gameObject.SetActive(false);
                 timer.gameObject.SetActive(true);
                 health_text.gameObject.SetActive(true);
+                chaserText.gameObject.SetActive(true);
                 startText.SetActive(false);
                 winnerText.SetActive(false);
                 health_text.text = "Lives: " + health;
+                chaserText.text = "You are a: " + chaserTextString;
                 break;
             case 2:
                 heart0.gameObject.SetActive(true);
@@ -116,9 +143,11 @@ public class GameManager : MonoBehaviour
                 heart3.gameObject.SetActive(false);
                 timer.gameObject.SetActive(true);
                 health_text.gameObject.SetActive(true);
+                chaserText.gameObject.SetActive(true);
                 startText.SetActive(false);
                 winnerText.SetActive(false);
                 health_text.text = "Lives: " + health;
+                chaserText.text = "You are a: " + chaserTextString;
                 break;
             case 1:
                 heart0.gameObject.SetActive(true);
@@ -127,21 +156,25 @@ public class GameManager : MonoBehaviour
                 heart3.gameObject.SetActive(false);
                 timer.gameObject.SetActive(true);
                 health_text.gameObject.SetActive(true);
+                chaserText.gameObject.SetActive(true);
                 startText.SetActive(false);
                 winnerText.SetActive(false);
                 health_text.text = "Lives: " + health;
+                chaserText.text = "You are a: " + chaserTextString;
                 break;
             case 0:
                 heart0.gameObject.SetActive(false);
                 heart1.gameObject.SetActive(false);
                 heart2.gameObject.SetActive(false);
                 heart3.gameObject.SetActive(false);
-                gameOver.gameObject.SetActive(true);
+                //gameOver.gameObject.SetActive(true);
                 timer.gameObject.SetActive(false);
                 health_text.gameObject.SetActive(false);
+                chaserText.gameObject.SetActive(false);
                 startText.SetActive(false);
                 winnerText.SetActive(false);
                 health_text.text = "Lives: " + health;
+                chaserText.text = "You are a: " + chaserTextString;
                 //Time.timeScale = 0;
                 //restartButton.gameObject.SetActive(true);
                 break;
@@ -167,6 +200,50 @@ public class GameManager : MonoBehaviour
         myPlayerTagTrackerScript = myPlayer.GetComponent<PlayerTagTracker>();
     }
 
+    private void StartGame()
+    {
+        if (PhotonView.Find(playerID).IsMine)
+        {
+            myView.RPC("StartGameRPC", RpcTarget.All);
+            var photonViews = FindObjectsOfType<PhotonView>();
+            int playersInScene = 0;
+
+            foreach (var view in photonViews)
+            {
+                if (view.gameObject.name == "NetworkPlayer(Clone)")
+                {
+                    playersInScene++;
+                }
+            }
+
+            int chaserIndex = Random.Range(0, playersInScene);
+            int counter = 0;
+
+            Debug.Log(chaserIndex);
+
+            foreach (var view in photonViews)
+            {
+                if (view.gameObject.name == "NetworkPlayer(Clone)")
+                {
+                    bool isChaser = false;
+                    if (counter == chaserIndex)
+                    {
+                        isChaser = true;
+                    }
+                    counter++;
+                    PlayerTagTracker anyPlayerTagTracker = view.gameObject.GetComponent<PlayerTagTracker>();
+                    anyPlayerTagTracker.MoveAtStart(isChaser);
+                }
+            }
+        }
+    }
+
+    [PunRPC]
+    void StartGameRPC()
+    {
+        gameStarted = true;
+    }
+
     public void CheckForWinner()
     {
         var photonViews = FindObjectsOfType<PhotonView>();
@@ -186,89 +263,20 @@ public class GameManager : MonoBehaviour
         {
             if (view.gameObject.name == "NetworkPlayer(Clone)")
             {
-                PlayerTagTracker myPlayerTagTrackerScript = view.gameObject.GetComponent<PlayerTagTracker>();
-                if(myPlayerTagTrackerScript.lives > 0)
+                PlayerTagTracker anyPlayTagTrackerScript = view.gameObject.GetComponent<PlayerTagTracker>();
+                if(anyPlayTagTrackerScript.lives > 0)
                 {
                     playersAlive++;
                 }
             }
         }
 
-        myPlayerTagTrackerScript = myPlayer.GetComponent<PlayerTagTracker>();
         bool myPlayerAlive = (myPlayerTagTrackerScript.lives > 0);
 
         if(playersAlive == 1 && myPlayerAlive)
         {
             isWinner = true;
         }
-    }
-
-    //ignore this function. it isnt working properly.
-    /*
-    public void AssignHost()
-    {
-        var photonViews = FindObjectsOfType<PhotonView>();
-        bool hostInGame = false;
-
-        foreach (var view in photonViews)
-        {
-            
-            if (view.gameObject.name == "NetworkPlayer(Clone)")
-            {
-                //Debug.Log(view.ViewID);
-                PlayerTagTracker myPlayerTagTrackerScript = view.gameObject.GetComponent<PlayerTagTracker>();
-                if (myPlayerTagTrackerScript.isHost == true)
-                {
-                    hostInGame = true;
-                }
-            }
-        }
-
-        if (!hostInGame)
-        {
-            myPlayerTagTrackerScript.SetHost();
-        }
-    }*/
-
-    private void StartGame()
-    {
-        myView.RPC("StartGameRPC", RpcTarget.All);
-        var photonViews = FindObjectsOfType<PhotonView>();
-        int playersInScene = 0;
-
-        foreach (var view in photonViews)
-        {
-            if (view.gameObject.name == "NetworkPlayer(Clone)")
-            {
-                playersInScene++;
-            }
-        }
-
-        int chaserIndex = Random.Range(0, playersInScene);
-        int counter = 0;
-
-        Debug.Log(chaserIndex);
-
-        foreach (var view in photonViews)
-        {
-            if (view.gameObject.name == "NetworkPlayer(Clone)")
-            {
-                bool isChaser = false;
-                if (counter == chaserIndex)
-                {
-                    isChaser = true;
-                }
-                counter++;
-                PlayerTagTracker myPlayerTagTrackerScript = view.gameObject.GetComponent<PlayerTagTracker>();
-                myPlayerTagTrackerScript.MoveAtStart(isChaser);
-            }
-        }
-    }
-
-    [PunRPC]
-    void StartGameRPC()
-    {
-        gameStarted = true;
     }
 
     public void updateHealth(int num)
@@ -287,6 +295,18 @@ public class GameManager : MonoBehaviour
             }
         }
         
+    }
+
+    public void ResetTimer()
+    {
+        myView.RPC("ResetTimerRPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void ResetTimerRPC()
+    {
+        timeRemaining = 120f;
+        updateTime(timeRemaining);
     }
 
     private void updateTime(float time)

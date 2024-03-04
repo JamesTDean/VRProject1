@@ -49,6 +49,7 @@ public class PlayerTagTracker : MonoBehaviourPunCallbacks
                 gameObject.tag = "runner";
             }
 
+            /*
             //this is only for debugging
             if (inputData.rightController.TryGetFeatureValue(CommonUsages.primaryButton, out bool press))
             {
@@ -57,7 +58,7 @@ public class PlayerTagTracker : MonoBehaviourPunCallbacks
                     chaser = true;
                 }
             }
-            //debugText.SetText(isHost.ToString());
+            debugText.SetText(chaser.ToString());*/
         }
 
         if (test)
